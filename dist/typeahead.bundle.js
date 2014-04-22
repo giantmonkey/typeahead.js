@@ -645,9 +645,13 @@
                     var matchesWithBackfill = matches.slice(0);
                     _.each(remoteMatches, function(remoteMatch) {
                         var isDuplicate;
-                        isDuplicate = _.some(matchesWithBackfill, function(match) {
-                            return that.dupDetector(remoteMatch, match);
-                        });
+                        if (matchesWithBackfill.length) {
+                          isDuplicate = _.some(matchesWithBackfill, function(match) {
+                              return that.dupDetector(remoteMatch, match);
+                          });
+                        } else {
+                          isDuplicate = that.dupDetector(remoteMatch, null);
+                        }
                         !isDuplicate && matchesWithBackfill.push(remoteMatch);
                         return matchesWithBackfill.length < that.limit;
                     });
